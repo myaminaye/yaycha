@@ -1,81 +1,39 @@
-import { useContext, useState } from "react";
-import Item from "./Item";
-import List from "./List";
-import Form from "./Form";
-import { AppContext } from "./ThemedApp";
+import { useState } from "react";
+import { Box, Container } from "@mui/material";
+import Header from "./components/Header";
+import Form from "./components/Form";
+import Item from "./components/Item";
+import { useApp } from "./ThemedApp";
 
 export default function App() {
+  const { showForm, setGlobalMsg } = useApp();
+
   const [data, setData] = useState([
-    { id: 1, content: "Hello, World!", name: "Alice" },
-    { id: 2, content: "React is fun.", name: "Bob" },
     { id: 3, content: "Yay, interesting.", name: "Chris" },
+    { id: 2, content: "React is fun.", name: "Bob" },
+    { id: 1, content: "Hello, World!", name: "Alice" },
   ]);
 
-  const [showForm, setShowForm] = useState(false);
-  const { mode, setMode } = useContext(AppContext);
-
   const remove = (id) => {
-    setData(data.filter((item) => item.id != id));
+    setData(data.filter((item) => item.id !== id));
+    setGlobalMsg("An item deleted.");
   };
 
   const add = (content, name) => {
-    const id = data[data.length - 1].id + 1;
-    setData([...data, { id, content, name }]);
+    const id = data[0].id + 1;
+    setData([{ id, content, name }, ...data]);
+    setGlobalMsg("An item added.");
   };
 
   return (
-    <div
-      style={{
-        minHeight: 1500,
-        background: mode === "dark" ? "black" : "white",
-        color: mode === "dark" ? "white" : "black",
-        paddingTop: 20,
-      }}
-    >
-      <h1
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        Yaycha
-        <div>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 50,
-              border: "0 none",
-              background: showForm ? "#dc3545" : "#0d6efd",
-              color: "white",
-            }}
-          >
-            {showForm ? "×" : "+"}
-          </button>
-          <button
-            onClick={() => setMode(mode === "dark" ? "light" : "dark")}
-            style={{
-              marginLeft: 8,
-              padding: "0 20px",
-              height: 32,
-              borderRadius: 32,
-              border: "0 none",
-              background: mode === "dark" ? "#333" : "#ddd",
-              color: mode === "dark" ? "white" : "black",
-            }}
-          >
-            {mode === "dark" ? "Light" : "Dark"}
-          </button>
-        </div>
-      </h1>
-      {showForm && <Form add={add} />}
-      <List>
+    <Box>
+      <Header />
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
+        {showForm && <Form add={add} />}
         {data.map((item) => {
-          return <Item item={item} key={item.id} remove={remove} />;
+          return <Item key={item.id} item={item} remove={remove} />;
         })}
-      </List>
-    </div>
+      </Container>
+    </Box>
   );
 }
