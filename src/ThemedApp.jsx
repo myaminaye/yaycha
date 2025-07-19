@@ -9,8 +9,11 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
 import Likes from "./pages/Likes";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const AppContext = createContext();
+
+export const queryClient = new QueryClient();
 
 export function useApp() {
   return useContext(AppContext);
@@ -82,7 +85,9 @@ export default function ThemedApp() {
           setMode,
         }}
       >
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>
