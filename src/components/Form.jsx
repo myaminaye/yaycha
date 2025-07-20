@@ -8,7 +8,7 @@ export default function Form({ add }) {
       onSubmit={(e) => {
         e.preventDefault();
         const content = contentRef.current.value;
-        add(content, "Momya");
+        add.mutate(content);
         e.currentTarget.reset();
       }}
     >

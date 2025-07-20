@@ -6,13 +6,17 @@ import { formatRelative } from "date-fns";
 
 export default function Item({ item, remove, primary, comment }) {
   const navigate = useNavigate();
+
+  console.log(item);
+  console.log("Item component rendered with item:", item, "primary:", primary, "comment:", comment);
   return (
     <Card sx={{ mb: 2 }}>
       {primary && <Box sx={{ height: 50, bgcolor: green[500] }}></Box>}
       <CardContent
-        onClick={() => {
+        onClick={(e) => {
           if (comment) return false;
-          navigate(`/comments/${item.id}`);
+          navigate(`/comments/${item.user.id}`);
+          e.stopPropagation();
         }}
         sx={{ cursor: "pointer" }}
       >
@@ -56,7 +60,7 @@ export default function Item({ item, remove, primary, comment }) {
           }}
         >
           <UserIcon fontSize="12" color="info" />
-          <Typography variant="caption">{item.user.name}</Typography>
+          <Typography variant="caption">{item?.user?.name}</Typography>
         </Box>
       </CardContent>
     </Card>
