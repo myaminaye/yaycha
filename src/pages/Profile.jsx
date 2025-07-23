@@ -1,9 +1,10 @@
-import { Alert, Avatar, Box, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Typography } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import Item from "../components/Item";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchUser } from "../libs/fetcher";
+import FollowButton from "../components/FollowButton";
 
 export default function Profile() {
   const { id } = useParams();
@@ -38,9 +39,15 @@ export default function Profile() {
       >
         <Avatar sx={{ width: 100, height: 100, bgcolor: pink[500] }} />
         <Box sx={{ textAlign: "center" }}>
-          <Typography>{data.name}</Typography>
-          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>{data.bio}</Typography>
+          <Typography>{data?.name}</Typography>
+          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>{data?.bio}</Typography>
         </Box>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 2, mt: 1 }}>
+          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>{data?.posts.length} posts</Typography>
+          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>{data?.followers.length} followers</Typography>
+          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>{data?.following.length} following</Typography>
+        </Box>
+        <FollowButton user={data} />
       </Box>
       {data.posts &&
         data.posts.map((post) => {

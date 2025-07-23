@@ -11,6 +11,9 @@ import Comments from "./pages/Comments";
 import Likes from "./pages/Likes";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { fetchVerify } from "./libs/fetcher";
+import Search from "./components/Search";
+import Notis from "./components/Notis";
+import AppSocket from "./AppSocket";
 
 const AppContext = createContext();
 
@@ -46,8 +49,16 @@ const router = createBrowserRouter([
         element: <Comments />,
       },
       {
-        path: "/likes/:id",
+        path: "/likes/:id/:type",
         element: <Likes />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
+      },
+      {
+        path: "/notis",
+        element: <Notis />,
       },
     ],
   },
@@ -94,6 +105,7 @@ export default function ThemedApp() {
       >
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <AppSocket />
         </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>

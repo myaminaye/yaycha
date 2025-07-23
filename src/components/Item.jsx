@@ -3,12 +3,12 @@ import { Alarm as TimeIcon, AccountCircle as UserIcon, Delete as DeleteIcon } fr
 import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { formatRelative } from "date-fns";
+import LikeButton from "./LikeButton";
+import CommentButton from "./CommentButton";
 
 export default function Item({ item, remove, primary, comment }) {
   const navigate = useNavigate();
 
-  console.log(item);
-  console.log("Item component rendered with item:", item, "primary:", primary, "comment:", comment);
   return (
     <Card sx={{ mb: 2 }}>
       {primary && <Box sx={{ height: 50, bgcolor: green[500] }}></Box>}
@@ -56,11 +56,28 @@ export default function Item({ item, remove, primary, comment }) {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            gap: 1,
+            justifyContent: "space-between",
           }}
         >
-          <UserIcon fontSize="12" color="info" />
-          <Typography variant="caption">{item?.user?.name}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+            }}
+            onClick={(e) => {
+              navigate(`/profile/${item.user?.id}`);
+              e.stopPropagation();
+            }}
+          >
+            <UserIcon fontSize="12" color="info" />
+            <Typography variant="caption">{item.user?.name || item.name}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 1, justifyContent: "flex-end" }}>
+            <LikeButton item={item} comment={comment} />
+            <CommentButton item={item} comment={comment} />
+          </Box>
         </Box>
       </CardContent>
     </Card>
